@@ -13,7 +13,7 @@ game.PlayerEntity = me.Entity.extend({
         }]);
     
         this.renderable.addAnimation("idle", [3]);
-        this.renderable.addAnimation("smallWalk", [8, 9, 10, 11, 12, 13], 80);
+        this.renderable.addAnimation("smallWalk", [8, 9, 10, 11, 12, 13,], 80);
         
         this.renderable.setCurrentAnimation("idle");
         
@@ -32,7 +32,8 @@ game.PlayerEntity = me.Entity.extend({
             if(!this.renderable.isCurrentAnimation("smallWalk")) {
            this.renderable.setCurrentAnimation("smallWalk");
            this.renderable.setAnimationFrame();
-           }else{
+           }
+       }else{
             this.renderable.setCurrentAnimation("idle");
         }
         
@@ -40,5 +41,5 @@ game.PlayerEntity = me.Entity.extend({
         this.body.update(delta);
         this._super(me.Entity, "update", [delta]);
         return true;
-    }   
+    }  
 });
