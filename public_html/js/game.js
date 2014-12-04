@@ -40,6 +40,7 @@ var game = {
 	// Run on game resources loaded.
 	"loaded" : function () {
             me.pool.register("mario", game.PlayerEntity, true);
+            me.pool.register("EnemyEntities", game.EnemyEntities);
            
             me.pool.register("levelTrigger", game.levelTrigger);
             
