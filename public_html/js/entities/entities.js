@@ -13,10 +13,15 @@ game.PlayerEntity = me.Entity.extend({
         }]);
     
         this.renderable.addAnimation("idle", [3]);
+        this.renderable.addAnimation("bigIdle", [19]); 
         this.renderable.addAnimation("smallWalk", [8, 9, 10, 11, 12, 13,], 80);
+        this.renderable.addAnimation("bigWalk", [14, 15, 16, 17, 18, 19], 80);
+        this.renderable.addAnimation("shrink", [], 20);
+        this.renderable.addAnimation("grow", [4, 5, 6, 7],20)
         
         this.renderable.setCurrentAnimation("idle");
         
+        this.big = false;
         this.body.setVelocity(5, 20);
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
     },
@@ -45,33 +50,57 @@ game.PlayerEntity = me.Entity.extend({
         this.body.update(delta);
         me.collision.check(this, true, this.collideHandler.bind(this), true);
         
+        if(!this.big){
         if(this.body.vel.x !== 0){
-            if(!this.renderable.isCurrentAnimation("smallWalk")) {
+            if(!this.renderable.isCurrentAnimation("smallWalk" ) && !this.renderableisCurrentAnimation("grow") && !this.renderable.isCurrentAnimation("shrink")) {   {
            this.renderable.setCurrentAnimation("smallWalk");
            this.renderable.setAnimationFrame();
            }
        }else{
             this.renderable.setCurrentAnimation("idle");
         }
-        
+    }else{
+        if(this.body.vel.x !== 0){
+            if(!this.renderable.isCurrentAnimation("bigWalk") && !this.renderableisCurrentAnimation("grow") && !this.renderable.isCurrentAnimation("shrink")) {
+           this.renderable.setCurrentAnimation("bigWalk");
+           this.renderable.setAnimationFrame();
+           }
+       }else{
+            this.renderable.setCurrentAnimation("big    idle");
+        }
+    }
         
         
         this._super(me.Entity, "update", [delta]);
         return true;
-    },
+    };
     
-    collideHandler: function(response){
+    collideHandler: function(response){ 
         var ydif = this.pos.y - response.b.pos.y;
         console.log(ydif);
         
         if(response.b.type === 'EnemyEntities'){
             if(ydif <= -115){
                 response.b.alive =  false;
+                this.body.vel.y -= this.body.accel.y * me.timer.tick;
+                this.jumping = true;
+                this.renderable.setCurrentAnimation("shrink", "smallIdle");
+                this.renderable.setAnimationFrame();
+            }else{
+                if(this.big){
+                     
+                }else
+                 me.state.change(me.state.MENU);
+             
             }
             
-        me.state.change(me.state.MENU);
-        }
-        
+       
+        }else if(response.b.type === 'mushroom'){
+            this.renderable.setCurrentAnimation("grow", "smallIdle");
+            this.big = true;
+        console.log("Big!");
+        me.game.world.removeChild(response.b);
+    }
     }
     
 });
