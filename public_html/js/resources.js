@@ -9,7 +9,7 @@ game.resources = [
         {name: "mario", type:"image", src: "data/img/player1.png"},  
         {name: "slime", type:"image", src: "data/img/slime-spritesheet.png"},
         {name: "mario title", type:"image", src: "data/img/mario title.jpg"},
-        
+        {name: "mushroom", type:"image", src: "data/img/mushroom.png"},
 	/* Atlases 
 	 * @example
 	 * {name: "example_tps", type: "tps", src: "data/img/example_tps.json"},
